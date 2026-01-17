@@ -10,8 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/cannon": "^6.6.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@react-three/gltfjsx": "^4.3.4",
+    "@react-three/postprocessing": "^3.0.4",
+    "@react-three/xr": "^6.6.29",
+    "@types/three": "^0.182.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "three": "^0.182.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

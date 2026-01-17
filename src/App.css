@@ -1,4 +1,10 @@
-.webcam {
-  height: 100vh;
-  width: 100vw;
+.video_input {
+  height: 24vh;
+  width: 32vw;
+}
+
+.video_output {
+    height: 72vh;
+    width: 148vh;
+    background: black;
 }
