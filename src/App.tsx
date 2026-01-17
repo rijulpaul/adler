@@ -4,6 +4,7 @@ import './App.css'
 
 import faceTracker from './components/trackers/faceTracker';
 import poseTracker from './components/trackers/poseTracker';
+import handTracker from './components/trackers/handTracker';
 
 function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -54,13 +55,13 @@ function App() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
-      if (frameRef.current % 5 === 0) {
-        // calculate pose every 5th frame
-        await poseTracker(video, canvas);
-      } else if (frameRef.current % 3 === 0) {
+      if (frameRef.current % 3 === 0) {
         // calculate face every 3rd frame
         await faceTracker(video, canvas);
+      } else if (frameRef.current % 5 === 0) {
+        // calculate pose every 5th frame
+        await poseTracker(video, canvas);
+        await handTracker(video, canvas);
       }
 
       frameRef.current++;
