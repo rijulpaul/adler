@@ -2,7 +2,6 @@ import vision from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3"
 const { FaceLandmarker, FilesetResolver, DrawingUtils } = vision;
 
 let lastVideoTime = -1;
-const videoWidth = 480;
 
 let results = undefined;
 
@@ -26,21 +25,23 @@ function faceTracker(
   canvasElement: HTMLCanvasElement
 ) {
 
-  if (!videoElement || !canvasElement) {
-    console.error("Error: canvas or video not initalized");
+  if (videoElement.readyState < 2 || videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
+    // Video not ready yet
     return;
   }
 
   const canvasCtx = canvasElement.getContext("2d");
   const drawingUtils = new DrawingUtils(canvasCtx);
 
-  const radio = videoElement.videoHeight / videoElement.videoWidth;
-  videoElement.style.width = videoWidth + "px";
-  videoElement.style.height = videoWidth * radio + "px";
-  canvasElement.style.width = videoWidth + "px";
-  canvasElement.style.height = videoWidth * radio + "px";
-  canvasElement.width = videoElement.videoWidth;
-  canvasElement.height = videoElement.videoHeight;
+  // canvasCtx!.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+  // const radio = videoElement.videoHeight / videoElement.videoWidth;
+  // videoElement.style.width = videoWidth + "px";
+  // videoElement.style.height = videoWidth * radio + "px";
+  // canvasElement.style.width = videoWidth + "px";
+  // canvasElement.style.height = videoWidth * radio + "px";
+  // canvasElement.width = videoElement.videoWidth;
+  // canvasElement.height = videoElement.videoHeight;
 
   const startTimeMs = performance.now();
   if (lastVideoTime !== videoElement.currentTime) {
@@ -49,11 +50,11 @@ function faceTracker(
   }
   if (results.faceLandmarks) {
     for (const landmarks of results.faceLandmarks) {
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-        { color: "#C0C0C070", lineWidth: 1 }
-      );
+      // drawingUtils.drawConnectors(
+      //   landmarks,
+      //   FaceLandmarker.FACE_LANDMARKS_TESSELATION,
+      //   { color: "#C0C0C070", lineWidth: 1 }
+      // );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
