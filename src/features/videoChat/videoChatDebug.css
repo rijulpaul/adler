@@ -1,0 +1,11 @@
+.video_input,
+.video_output {
+    height: 270px;
+    width: 360px;
+    background: gray;
+    object-fit: cover;
+}
+
+.video_output {
+    background-color: black;
+}

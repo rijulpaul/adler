@@ -58,42 +58,42 @@ function faceTracker(
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-        { color: "#FF3030" }
+        { color: "#FF3030", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
-        { color: "#FF3030" }
+        { color: "#FF3030", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-        { color: "#30FF30" }
+        { color: "#30FF30", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
-        { color: "#30FF30" }
+        { color: "#30FF30", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-        { color: "#E0E0E0" }
+        { color: "#E0E0E0", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_LIPS,
-        { color: "#E0E0E0" }
+        { color: "#E0E0E0", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS,
-        { color: "#FF3030" }
+        { color: "#FF3030", lineWidth: 2 }
       );
       drawingUtils.drawConnectors(
         landmarks,
         FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS,
-        { color: "#30FF30" }
+        { color: "#30FF30", lineWidth: 2 }
       );
     }
   }
