@@ -1,9 +1,5 @@
 import vision from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
-const { FaceLandmarker, FilesetResolver, DrawingUtils } = vision;
-
-let lastVideoTime = -1;
-
-let results = undefined;
+const { FaceLandmarker, FilesetResolver } = vision;
 
 const filesetResolver = await FilesetResolver.forVisionTasks(
   "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
@@ -20,83 +16,14 @@ const faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
   numFaces: 1,
 });
 
-function faceTracker(
-  videoElement: HTMLVideoElement,
-  canvasElement: HTMLCanvasElement
-) {
+// detect face
+export function detectFace(videoElement: HTMLVideoElement) {
+  if (!faceLandmarker) return;
 
   if (videoElement.readyState < 2 || videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
-    // Video not ready yet
     return;
   }
 
-  const canvasCtx = canvasElement.getContext("2d");
-  const drawingUtils = new DrawingUtils(canvasCtx);
-
-  // canvasCtx!.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-  // const radio = videoElement.videoHeight / videoElement.videoWidth;
-  // videoElement.style.width = videoWidth + "px";
-  // videoElement.style.height = videoWidth * radio + "px";
-  // canvasElement.style.width = videoWidth + "px";
-  // canvasElement.style.height = videoWidth * radio + "px";
-  // canvasElement.width = videoElement.videoWidth;
-  // canvasElement.height = videoElement.videoHeight;
-
   const startTimeMs = performance.now();
-  if (lastVideoTime !== videoElement.currentTime) {
-    lastVideoTime = videoElement.currentTime;
-    results = faceLandmarker.detectForVideo(videoElement, startTimeMs);
-  }
-  if (results.faceLandmarks) {
-    for (const landmarks of results.faceLandmarks) {
-      // drawingUtils.drawConnectors(
-      //   landmarks,
-      //   FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-      //   { color: "#C0C0C070", lineWidth: 1 }
-      // );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE,
-        { color: "#FF3030", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_RIGHT_EYEBROW,
-        { color: "#FF3030", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_LEFT_EYE,
-        { color: "#30FF30", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_LEFT_EYEBROW,
-        { color: "#30FF30", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_FACE_OVAL,
-        { color: "#E0E0E0", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_LIPS,
-        { color: "#E0E0E0", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_RIGHT_IRIS,
-        { color: "#FF3030", lineWidth: 2 }
-      );
-      drawingUtils.drawConnectors(
-        landmarks,
-        FaceLandmarker.FACE_LANDMARKS_LEFT_IRIS,
-        { color: "#30FF30", lineWidth: 2 }
-      );
-    }
-  }
+  return faceLandmarker.detectForVideo(videoElement, startTimeMs);
 }
-
-export default faceTracker;

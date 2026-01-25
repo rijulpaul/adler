@@ -1,7 +1,6 @@
 import {
     HandLandmarker,
-    FilesetResolver,
-    DrawingUtils
+    FilesetResolver
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
 
 const vision = await FilesetResolver.forVisionTasks(
@@ -17,33 +16,11 @@ const handLandmarker = await HandLandmarker.createFromOptions(vision, {
     modelComplexity: 0
 });
 
-let lastVideoTime = -1;
-let results = undefined;
-
-function handTracker(videoElement: HTMLVideoElement, canvasElement: HTMLCanvasElement) {
+export function detectHand(videoElement: HTMLVideoElement) {
     if (videoElement.readyState < 2 || videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
-        // Video not ready yet
         return;
     }
 
-    const canvasCtx = canvasElement.getContext("2d");
-    const drawingUtils = new DrawingUtils(canvasCtx);
-
     const startTimeMs = performance.now();
-    if (lastVideoTime !== videoElement.currentTime) {
-        lastVideoTime = videoElement.currentTime;
-        results = handLandmarker.detectForVideo(videoElement, startTimeMs);
-    }
-
-    if (results.landmarks) {
-        for (const landmarks of results.landmarks) {
-            drawingUtils.drawConnectors(landmarks, HandLandmarker.HAND_CONNECTIONS, {
-                color: "#00FF00",
-                lineWidth: 2
-            });
-            drawingUtils.drawLandmarks(landmarks, { color: "#FF0000", lineWidth: 1 });
-        }
-    }
+    return handLandmarker.detectForVideo(videoElement, startTimeMs);
 }
-
-export default handTracker;

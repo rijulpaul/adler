@@ -2,9 +2,10 @@ import { useEffect, useRef } from 'react';
 
 import './videoChatDebug.css'
 
-import faceTracker from '../../lib/trackers/faceTracker';
-import poseTracker from '../../lib/trackers/poseTracker';
-import handTracker from '../../lib/trackers/handTracker';
+import { detectFace } from '../../lib/trackers/faceTracker';
+import { detectPose } from '../../lib/trackers/poseTracker';
+import { detectHand } from '../../lib/trackers/handTracker';
+import { draw } from '../../lib/trackers/utils';
 
 function VideoChatDebug() {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -16,7 +17,7 @@ function VideoChatDebug() {
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({
             video: {
-                width: { ideal: 480 },
+                width: { ideal: 640 },
                 height: { ideal: 360 },
                 facingMode: "user",
             },
@@ -76,11 +77,19 @@ function VideoChatDebug() {
 
             if (frameRef.current % 3 === 0) {
                 // calculate face every 3rd frame
-                faceTracker(video, canvas);
-                handTracker(video, canvas);
+                const faceResults = detectFace(video);
+                const handResults = detectHand(video);
+
+                draw(canvas, {
+                    face: faceResults,
+                    hand: handResults
+                });
             } else if (frameRef.current % 5 === 0) {
                 // calculate pose every 5th frame
-                poseTracker(video, canvas);
+                const poseResults = detectPose(video);
+                draw(canvas, {
+                    pose: poseResults
+                });
             }
 
             frameRef.current++;
