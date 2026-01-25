@@ -78,18 +78,24 @@ function VideoChatDebug() {
             if (frameRef.current % 3 === 0) {
                 // calculate face every 3rd frame
                 const faceResults = detectFace(video);
-                const handResults = detectHand(video);
-
                 draw(canvas, {
-                    face: faceResults,
+                    face: faceResults
+                });
+                // console.log(faceResults)
+            } else if (frameRef.current % 3 === 1) {
+                // calculate pose every 5th frame
+                const handResults = detectHand(video);
+                draw(canvas, {
                     hand: handResults
                 });
-            } else if (frameRef.current % 5 === 0) {
+                // console.log(handResults)
+            } else if (frameRef.current % 3 === 2) {
                 // calculate pose every 5th frame
                 const poseResults = detectPose(video);
                 draw(canvas, {
                     pose: poseResults
                 });
+                // console.log(poseResults)
             }
 
             frameRef.current++;
@@ -104,7 +110,7 @@ function VideoChatDebug() {
 
     return (
         <>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="video_container">
                 <canvas ref={canvasRef} className='video_output' />
                 <video
                     ref={videoRef}
@@ -115,7 +121,7 @@ function VideoChatDebug() {
                 />
             </div>
         </>
-    )
+    );
 }
 
 export default VideoChatDebug;

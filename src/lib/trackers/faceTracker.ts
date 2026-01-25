@@ -14,6 +14,7 @@ const faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
   outputFaceBlendshapes: true,
   runningMode: 'VIDEO',
   numFaces: 1,
+  modelComplexity: 1
 });
 
 // detect face

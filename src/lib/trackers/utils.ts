@@ -5,19 +5,13 @@ import {
     DrawingUtils
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
 
-type FaceLandmarkerResult = any;
-type HandLandmarkerResult = any;
-type PoseLandmarkerResult = any;
-
 export interface DetectionResults {
-    face?: FaceLandmarkerResult;
-    hand?: HandLandmarkerResult;
-    pose?: PoseLandmarkerResult;
+    face?: object;
+    hand?: object;
+    pose?: object;
 }
 
 export function draw(canvasElement: HTMLCanvasElement, results: DetectionResults) {
-    console.log(typeof results)
-
     const canvasCtx = canvasElement.getContext("2d");
     if (!canvasCtx) return;
 
