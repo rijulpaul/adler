@@ -1,0 +1,152 @@
+{
+    "0": {
+        "bone": "Head",
+        "mpName": "nose"
+    },
+    "1": {
+        "bone": null,
+        "mpName": "left_eye_inner"
+    },
+    "2": {
+        "bone": null,
+        "mpName": "left_eye"
+    },
+    "3": {
+        "bone": null,
+        "mpName": "left_eye_outer"
+    },
+    "4": {
+        "bone": null,
+        "mpName": "right_eye_inner"
+    },
+    "5": {
+        "bone": null,
+        "mpName": "right_eye"
+    },
+    "6": {
+        "bone": null,
+        "mpName": "right_eye_outer"
+    },
+    "7": {
+        "bone": null,
+        "mpName": "left_ear"
+    },
+    "8": {
+        "bone": null,
+        "mpName": "right_ear"
+    },
+    "9": {
+        "bone": null,
+        "mpName": "mouth_left"
+    },
+    "10": {
+        "bone": null,
+        "mpName": "mouth_right"
+    },
+    "11": {
+        "bone": "shoulder.L",
+        "mpName": "left_shoulder"
+    },
+    "12": {
+        "bone": "shoulder.R",
+        "mpName": "right_shoulder"
+    },
+    "13": {
+        "bone": "upper_arm.L",
+        "mpName": "left_elbow"
+    },
+    "14": {
+        "bone": "upper_arm.R",
+        "mpName": "right_elbow"
+    },
+    "15": {
+        "bone": "forearm.L",
+        "mpName": "left_wrist"
+    },
+    "16": {
+        "bone": "forearm.R",
+        "mpName": "right_wrist"
+    },
+    "17": {
+        "bone": "hand.L",
+        "mpName": "left_hand"
+    },
+    "18": {
+        "bone": "hand.R",
+        "mpName": "right_hand"
+    },
+    "19": {
+        "bone": null,
+        "mpName": "left_index"
+    },
+    "20": {
+        "bone": null,
+        "mpName": "right_index"
+    },
+    "21": {
+        "bone": null,
+        "mpName": "left_thumb"
+    },
+    "22": {
+        "bone": null,
+        "mpName": "right_thumb"
+    },
+    "23": {
+        "bone": "pelvis.L",
+        "mpName": "left_hip"
+    },
+    "24": {
+        "bone": "pelvis.R",
+        "mpName": "right_hip"
+    },
+    "25": {
+        "bone": "thigh.L",
+        "mpName": "left_knee"
+    },
+    "26": {
+        "bone": "thigh.R",
+        "mpName": "right_knee"
+    },
+    "27": {
+        "bone": "shin.L",
+        "mpName": "left_ankle"
+    },
+    "28": {
+        "bone": "shin.R",
+        "mpName": "right_ankle"
+    },
+    "29": {
+        "bone": null,
+        "mpName": "left_heel"
+    },
+    "30": {
+        "bone": null,
+        "mpName": "right_heel"
+    },
+    "31": {
+        "bone": null,
+        "mpName": "left_foot_index"
+    },
+    "32": {
+        "bone": null,
+        "mpName": "right_foot_index"
+    },
+    "Root": {
+        "bone": "spine"
+    },
+    "Neck": {
+        "bone": "Neck"
+    },
+    "Head": {
+        "bone": "Head"
+    },
+    "Lower Spine": {
+        "bone": "spine.001"
+    },
+    "Mid Spine": {
+        "bone": "spine.002"
+    },
+    "Upper Spine": {
+        "bone": "spine.003"
+    }
+}
