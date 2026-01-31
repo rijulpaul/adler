@@ -15,7 +15,7 @@ const poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
   },
   runningMode: 'VIDEO',
   numPoses: 1,
-  modelComplexity: 1,
+  modelComplexity: 2,
   enableSegmentation: false,
 });
 
