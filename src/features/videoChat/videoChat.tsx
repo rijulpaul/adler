@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import ChatEnvironment from "./chatEnvironment";
 import UserAvatar from "./userAvatar";
 import { useRef, useEffect } from "react";
-import { OrbitControls, Stats } from "@react-three/drei";
+import { Stats } from "@react-three/drei";
 
 function VideoChat() {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -58,7 +58,6 @@ function VideoChat() {
             <Canvas style={{ width: "80vw", height: "80vh", margin: "0 auto" }}>
                 <UserAvatar videoRef={videoRef} />
                 <ChatEnvironment />
-                <OrbitControls />
                 <Stats />
             </Canvas>
         </>
