@@ -1,4 +1,4 @@
-import VideoChat from "./features/videoChat/videoChat";
+import VideoChat from "./features/videoChat/components/VideoChat";
 
 function App() {
 
