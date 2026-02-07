@@ -14,8 +14,11 @@ function VideoChat() {
                 style={{
                     position: "absolute",
                     top: 0,
-                    left: 0,
-                    opacity: 0,
+                    right: 0,
+                    height: "30vh",
+                    // width: "100vw",
+                    zIndex: 100,
+                    // opacity: 0,
                     pointerEvents: "none"
                 }}
                 playsInline
@@ -37,7 +40,7 @@ function VideoChat() {
                 </div>
             )}
 
-            <Canvas style={{ width: "100vw", height: "100vh", display: "block" }}>
+            <Canvas style={{ width: "80vw", height: "80vh", display: "block" }} camera={{ near: 0.1, far: 1000 }}>
                 <UserAvatar videoRef={videoRef} isCameraReady={isReady} />
                 <ChatEnvironment />
                 <Stats />

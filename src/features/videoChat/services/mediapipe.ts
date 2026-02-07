@@ -33,7 +33,7 @@ class MediaPipeService {
                 outputFaceBlendshapes: true,
                 runningMode: "VIDEO",
                 numFaces: 1,
-                modelComplexity: 0,
+                modelComplexity: 2,
             }),
             HandLandmarker.createFromOptions(vision, {
                 baseOptions: {
@@ -42,7 +42,7 @@ class MediaPipeService {
                 },
                 runningMode: "VIDEO",
                 numHands: 2,
-                modelComplexity: 1,
+                modelComplexity: 2,
             }),
             PoseLandmarker.createFromOptions(vision, {
                 baseOptions: {
@@ -51,7 +51,7 @@ class MediaPipeService {
                 },
                 runningMode: "VIDEO",
                 numPoses: 1,
-                modelComplexity: 1,
+                modelComplexity: 2,
                 enableSegmentation: false,
             })
         ]);

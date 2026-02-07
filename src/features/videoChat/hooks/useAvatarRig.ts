@@ -4,73 +4,65 @@ import * as THREE from "three";
 import * as Kalidokit from "kalidokit";
 import { mediaPipeService } from "../services/mediapipe";
 import { RotationSmoother } from "../utils/math";
+import * as boneMap from "/public/avatars/AnimeGirlKawaii/AnimeGirlKawaii_BoneMap.json";
+import { calcArmsCustom } from "../utils/calcArms";
 
-// Define types for the rig parts
 interface AvatarRigProps {
     videoRef: React.RefObject<HTMLVideoElement | null>;
-    avatarMesh: THREE.Mesh | undefined;
-    headBone: THREE.Bone | undefined;
+    nodes: Record<string, THREE.Object3D>;
     isReady: boolean;
 }
 
-export function useAvatarRig({ videoRef, avatarMesh, headBone, isReady }: AvatarRigProps) {
+export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
     const frameRef = useRef(0);
-    const smoother = useRef(new RotationSmoother(0.15));
 
-    // Initialize MediaPipe service
+    // Pose rest quaternions (CRITICAL)
+    const poseRest = useRef<Record<string, THREE.Quaternion>>({});
+
+    // Smoothers
+    const headSmoother = useRef(new RotationSmoother(0.15));
+
     useEffect(() => {
         mediaPipeService.initialize();
     }, []);
 
-    useFrame(() => {
-        const videoElement = videoRef.current;
-        if (!isReady || !videoElement || !avatarMesh?.morphTargetInfluences || !avatarMesh.morphTargetDictionary || !headBone) {
-            return;
+    // Cache pose rest rotations ONCE
+    useEffect(() => {
+        if (!isReady) return;
+
+        for (const bone in boneMap.Pose) {
+            const modelBone = nodes[boneMap.Pose[bone]];
+            if (modelBone) {
+                poseRest.current[bone] = modelBone.quaternion.clone();
+            }
         }
+    }, [isReady, nodes]);
+
+    useFrame(() => {
+        const video = videoRef.current;
+        if (!isReady || !video) return;
 
         frameRef.current++;
-        // Distribute processing across frames to maintain basic 30-60fps performance without overloading
         const cycle = frameRef.current % 3;
+        // const cycle = 1;
 
-        switch (cycle) {
-            case 0:
-                updateFace(videoElement, avatarMesh, headBone, smoother.current);
-                break;
-            case 1:
-                updatePose(videoElement);
-                break;
-            case 2:
-                updateHand(videoElement);
-                break;
-        }
-    });
-}
+        // =========================
+        // FACE
+        // =========================
+        if (cycle === 0) {
+            const faceResult = mediaPipeService.trackFace(video);
+            if (!faceResult?.faceLandmarks?.length) return;
 
-function updateFace(
-    videoElement: HTMLVideoElement,
-    avatarMesh: THREE.Mesh,
-    headBone: THREE.Bone,
-    smoother: RotationSmoother
-) {
-    const faceResult = mediaPipeService.trackFace(videoElement);
+            const faceRig = Kalidokit.Face.solve(faceResult.faceLandmarks[0], {
+                runtime: "mediapipe",
+                video,
+            });
 
-    if (faceResult?.faceBlendshapes?.length > 0) {
-        const blendShapes = faceResult.faceBlendshapes[0].categories;
-        blendShapes.forEach((blendShape: { categoryName: string; score: number }) => {
-            const index = avatarMesh.morphTargetDictionary![blendShape.categoryName];
-            if (index !== undefined) {
-                avatarMesh.morphTargetInfluences![index] = blendShape.score;
-            }
-        });
-    }
+            if (!faceRig) return;
 
-    if (faceResult?.faceLandmarks?.length > 0) {
-        const faceRig = Kalidokit.Face.solve(faceResult.faceLandmarks[0], {
-            runtime: "mediapipe",
-            video: videoElement,
-        });
+            const headBone = nodes[boneMap.Face.head] as THREE.Bone;
+            if (!headBone) return;
 
-        if (faceRig) {
             const r = faceRig.head.degrees;
             const euler = new THREE.Euler(
                 -THREE.MathUtils.degToRad(r.x),
@@ -78,45 +70,120 @@ function updateFace(
                 THREE.MathUtils.degToRad(r.z),
                 "XYZ"
             );
+
             const targetQ = new THREE.Quaternion().setFromEuler(euler);
-
-            // Apply smoothing
-            const smoothedQ = smoother.smooth(targetQ);
-            headBone.quaternion.copy(smoothedQ);
+            // headBone.quaternion.copy(headSmoother.current.smooth(targetQ));
+            headBone.quaternion.slerp(targetQ, 0.4);
         }
-    }
-}
 
-function updatePose(videoElement: HTMLVideoElement) {
-    const poseResult = mediaPipeService.trackPose(videoElement);
-    if (poseResult?.worldLandmarks?.length > 0 && poseResult?.landmarks?.length > 0) {
-        // Just solving for now, can apply to bones if we had a full body rig
-        const poseRig = Kalidokit.Pose.solve(poseResult.worldLandmarks[0], poseResult.landmarks[0], {
-            runtime: "mediapipe",
-            video: videoElement,
-            enableLegs: true,
-        });
-        console.log(poseRig);
-    }
-}
+        // =========================
+        // POSE (FIXED)
+        // =========================
+        if (cycle === 1) {
+            const poseResult = mediaPipeService.trackPose(video);
+            poseResult.worldLandmarks[0][13].z = 2;
+            poseResult.landmarks[0][13].z = 2;
 
-function updateHand(videoElement: HTMLVideoElement) {
-    const handResult = mediaPipeService.trackHand(videoElement);
-    if (!handResult?.landmarks?.length) return;
-    const handRig: HandRig = {}
-    type HandRig = {
-        Left?: Kalidokit.THand<Kalidokit.Side> | undefined;
-        Right?: Kalidokit.THand<Kalidokit.Side> | undefined;
-    }
-    // Just solving for now
-    const { landmarks, handednesses } = handResult;
-    for (let i = 0; i < landmarks.length; i++) {
-        const lm = landmarks[i];
-        const side: Kalidokit.Side = handednesses?.[0]?.[i]?.categoryName === "Left" ? "Left" : "Right";
-        const solved = Kalidokit.Hand.solve(lm, side);
-        if (solved) {
-            handRig[side] = solved;
+            if (!poseResult?.worldLandmarks?.length) return;
+
+            const poseRig = Kalidokit.Pose.solve(
+                poseResult.worldLandmarks[0],
+                poseResult.landmarks[0],
+                { runtime: "mediapipe", video, enableLegs: false }
+            );
+
+            for (const bone in poseRig) {
+                if (!boneMap.Pose[bone]) continue;
+                if (bone === "Hips" || bone.endsWith("Arm")) continue;
+
+                const boneNode = nodes[boneMap.Pose[bone]];
+                const restQ = poseRest.current[bone];
+                if (!boneNode || !restQ) continue;
+
+                const r = poseRig[bone];
+
+                // DO NOT swap axes
+                const euler = new THREE.Euler(
+                    -r.x,
+                    -r.y,
+                    r.z,
+                    "XYZ"
+                );
+
+                const deltaQ = new THREE.Quaternion().setFromEuler(euler);
+                const finalQ = restQ.clone().multiply(deltaQ);
+
+                boneNode.quaternion.slerp(finalQ, 0.3);
+            }
+
+            // const arms = calcArmsCustom(poseResult.worldLandmarks[0]);
+
+            // LEFT ARM
+            // nodes[boneMap.Pose["LeftUpperArm"]].quaternion.setFromEuler(
+            //     new THREE.Euler(
+            //         arms.Left.shoulder.x,
+            //         arms.Left.shoulder.y,
+            //         0,
+            //         "XYZ"
+            //     )
+            // );
+
+            // nodes[boneMap.Pose["LeftLowerArm"]].quaternion.setFromEuler(
+            //     new THREE.Euler(arms.Left.elbow.x, 0, 0, "XYZ")
+            // );
+
+            // // RIGHT ARM
+            // nodes[boneMap.Pose["RightUpperArm"]].quaternion.setFromEuler(
+            //     new THREE.Euler(
+            //         arms.Right.shoulder.x,
+            //         arms.Right.shoulder.y,
+            //         0,
+            //         "XYZ"
+            //     )
+            // );
+
+            // nodes[boneMap.Pose["RightLowerArm"]].quaternion.setFromEuler(
+            //     new THREE.Euler(arms.Right.elbow.x, 0, 0, "XYZ")
+            // );
+
         }
-    }
-    console.log(handRig);
+
+        // =========================
+        // HAND
+        // =========================
+        if (cycle === 2) {
+            const handResult = mediaPipeService.trackHand(video);
+            if (!handResult?.landmarks?.length) return;
+
+            const { landmarks, handednesses } = handResult;
+
+            for (let i = 0; i < landmarks.length; i++) {
+                const side = handednesses?.[i]?.[0]?.categoryName === "Left" ? "Right" : "Left";
+                const solved = Kalidokit.Hand.solve(landmarks[i], side);
+                if (!solved) continue;
+
+                const isRight = side === "Right";
+
+                for (const bone in solved) {
+                    const boneName = boneMap.Hand?.[side]?.[bone];
+                    if (!boneName) continue;
+
+                    const handBone = nodes[boneName] as THREE.Bone;
+                    if (!handBone) continue;
+
+                    const r = solved[bone];
+
+                    const euler = new THREE.Euler(
+                        isRight ? -r.z : r.z,
+                        r.x,
+                        -r.y,
+                        "XYZ"
+                    );
+
+                    const q = new THREE.Quaternion().setFromEuler(euler);
+                    handBone.quaternion.slerp(q, 0.5);
+                }
+            }
+        }
+    });
 }

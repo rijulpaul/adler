@@ -1,199 +1,57 @@
 {
-    "bones": [
-        {
-            "name": "spine",
-            "bone": "spine",
-            "start": 23,
-            "end": 11,
-            "axis": "y",
-            "comment": "Left hip to left shoulder (torso spine)"
+    "Face": {
+        "head": "mixamorigHead"
+    },
+    "Pose": {
+        "Hips": "mixamorigHips",
+        "Spine": "mixamorigSpine",
+        "LeftUpperArm": "mixamorigLeftArm",
+        "LeftLowerArm": "mixamorigLeftForeArm",
+        "LeftHand": "mixamorigLeftHand",
+        "RightUpperArm": "mixamorigRightArm",
+        "RightLowerArm": "mixamorigRightForeArm",
+        "RightHand": "mixamorigRightHand",
+        "LeftUpperLeg": "mixamorigLeftUpLeg",
+        "LeftLowerLeg": "mixamorigLeftLeg",
+        "RightUpperLeg": "mixamorigRightUpLeg",
+        "RightLowerLeg": "mixamorigRightLeg"
+    },
+    "Hand": {
+        "Left": {
+            "LeftWrist": "mixamorigLeftHand",
+            "LeftThumbProximal": "mixamorigLeftHandThumb1",
+            "LeftThumbIntermediate": "mixamorigLeftHandThumb2",
+            "LeftThumbDistal": "mixamorigLeftHandThumb3",
+            "LeftIndexProximal": "mixamorigLeftHandIndex1",
+            "LeftIndexIntermediate": "mixamorigLeftHandIndex2",
+            "LeftIndexDistal": "mixamorigLeftHandIndex3",
+            "LeftMiddleProximal": "mixamorigLeftHandMiddle1",
+            "LeftMiddleIntermediate": "mixamorigLeftHandMiddle2",
+            "LeftMiddleDistal": "mixamorigLeftHandMiddle3",
+            "LeftRingProximal": "mixamorigLeftHandRing1",
+            "LeftRingIntermediate": "mixamorigLeftHandRing2",
+            "LeftRingDistal": "mixamorigLeftHandRing3",
+            "LeftLittleProximal": "mixamorigLeftHandPinky1",
+            "LeftLittleIntermediate": "mixamorigLeftHandPinky2",
+            "LeftLittleDistal": "mixamorigLeftHandPinky3"
         },
-        {
-            "name": "spine.001",
-            "bone": "spine.001",
-            "start": 23,
-            "end": 11,
-            "axis": "y",
-            "comment": "Lower spine"
-        },
-        {
-            "name": "spine.002",
-            "bone": "spine.002",
-            "start": 11,
-            "end": 12,
-            "axis": "y",
-            "comment": "Mid spine (between shoulders)"
-        },
-        {
-            "name": "spine.003",
-            "bone": "spine.003",
-            "start": 11,
-            "end": 0,
-            "axis": "y",
-            "comment": "Upper spine to neck"
-        },
-        {
-            "name": "Neck",
-            "bone": "Neck",
-            "start": 11,
-            "end": 0,
-            "axis": "y",
-            "comment": "Shoulder center to nose"
-        },
-        {
-            "name": "Head",
-            "bone": "Head",
-            "start": 0,
-            "end": null,
-            "useRotation": true,
-            "comment": "Head uses calculated rotation from face landmarks"
-        },
-        {
-            "name": "shoulder.L",
-            "bone": "shoulder.L",
-            "start": 11,
-            "end": 13,
-            "axis": "x",
-            "comment": "Left shoulder to left elbow"
-        },
-        {
-            "name": "upper_arm.L",
-            "bone": "upper_arm.L",
-            "start": 11,
-            "end": 13,
-            "axis": "x",
-            "comment": "Left shoulder to left elbow"
-        },
-        {
-            "name": "forearm.L",
-            "bone": "forearm.L",
-            "start": 13,
-            "end": 15,
-            "axis": "x",
-            "comment": "Left elbow to left wrist"
-        },
-        {
-            "name": "hand.L",
-            "bone": "hand.L",
-            "start": 15,
-            "end": 17,
-            "axis": "x",
-            "comment": "Left wrist to left hand"
-        },
-        {
-            "name": "shoulder.R",
-            "bone": "shoulder.R",
-            "start": 12,
-            "end": 14,
-            "axis": "x",
-            "comment": "Right shoulder to right elbow"
-        },
-        {
-            "name": "upper_arm.R",
-            "bone": "upper_arm.R",
-            "start": 12,
-            "end": 14,
-            "axis": "x",
-            "comment": "Right shoulder to right elbow"
-        },
-        {
-            "name": "forearm.R",
-            "bone": "forearm.R",
-            "start": 14,
-            "end": 16,
-            "axis": "x",
-            "comment": "Right elbow to right wrist"
-        },
-        {
-            "name": "hand.R",
-            "bone": "hand.R",
-            "start": 16,
-            "end": 18,
-            "axis": "x",
-            "comment": "Right wrist to right hand"
-        },
-        {
-            "name": "pelvis.L",
-            "bone": "pelvis.L",
-            "start": 23,
-            "end": 25,
-            "axis": "y",
-            "comment": "Left hip to left knee"
-        },
-        {
-            "name": "thigh.L",
-            "bone": "thigh.L",
-            "start": 23,
-            "end": 25,
-            "axis": "y",
-            "comment": "Left hip to left knee"
-        },
-        {
-            "name": "shin.L",
-            "bone": "shin.L",
-            "start": 25,
-            "end": 27,
-            "axis": "y",
-            "comment": "Left knee to left ankle"
-        },
-        {
-            "name": "pelvis.R",
-            "bone": "pelvis.R",
-            "start": 24,
-            "end": 26,
-            "axis": "y",
-            "comment": "Right hip to right knee"
-        },
-        {
-            "name": "thigh.R",
-            "bone": "thigh.R",
-            "start": 24,
-            "end": 26,
-            "axis": "y",
-            "comment": "Right hip to right knee"
-        },
-        {
-            "name": "shin.R",
-            "bone": "shin.R",
-            "start": 26,
-            "end": 28,
-            "axis": "y",
-            "comment": "Right knee to right ankle"
+        "Right": {
+            "RightWrist": "mixamorigRightHand",
+            "RightThumbProximal": "mixamorigRightHandThumb1",
+            "RightThumbIntermediate": "mixamorigRightHandThumb2",
+            "RightThumbDistal": "mixamorigRightHandThumb3",
+            "RightIndexProximal": "mixamorigRightHandIndex1",
+            "RightIndexIntermediate": "mixamorigRightHandIndex2",
+            "RightIndexDistal": "mixamorigRightHandIndex3",
+            "RightMiddleProximal": "mixamorigRightHandMiddle1",
+            "RightMiddleIntermediate": "mixamorigRightHandMiddle2",
+            "RightMiddleDistal": "mixamorigRightHandMiddle3",
+            "RightRingProximal": "mixamorigRightHandRing1",
+            "RightRingIntermediate": "mixamorigRightHandRing2",
+            "RightRingDistal": "mixamorigRightHandRing3",
+            "RightLittleProximal": "mixamorigRightHandPinky1",
+            "RightLittleIntermediate": "mixamorigRightHandPinky2",
+            "RightLittleDistal": "mixamorigRightHandPinky3"
         }
-    ],
-    "landmarkNames": {
-        "0": "nose",
-        "1": "left_eye_inner",
-        "2": "left_eye",
-        "3": "left_eye_outer",
-        "4": "right_eye_inner",
-        "5": "right_eye",
-        "6": "right_eye_outer",
-        "7": "left_ear",
-        "8": "right_ear",
-        "9": "mouth_left",
-        "10": "mouth_right",
-        "11": "left_shoulder",
-        "12": "right_shoulder",
-        "13": "left_elbow",
-        "14": "right_elbow",
-        "15": "left_wrist",
-        "16": "right_wrist",
-        "17": "left_pinky",
-        "18": "right_pinky",
-        "19": "left_index",
-        "20": "right_index",
-        "21": "left_thumb",
-        "22": "right_thumb",
-        "23": "left_hip",
-        "24": "right_hip",
-        "25": "left_knee",
-        "26": "right_knee",
-        "27": "left_ankle",
-        "28": "right_ankle",
-        "29": "left_heel",
-        "30": "right_heel",
-        "31": "left_foot_index",
-        "32": "right_foot_index"
     }
 }

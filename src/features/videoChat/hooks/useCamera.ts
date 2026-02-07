@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 
-export function useCamera(constraints = { video: { width: 640, height: 480 }, audio: false }) {
+export function useCamera(constraints = { video: { width: 1280, height: 720 }, audio: false }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isReady, setIsReady] = useState(false);
     const [error, setError] = useState<Error | null>(null);
