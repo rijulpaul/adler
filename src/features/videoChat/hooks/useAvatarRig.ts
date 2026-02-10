@@ -3,9 +3,9 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import * as Kalidokit from "kalidokit";
 import { mediaPipeService } from "../services/mediapipe";
-import { RotationSmoother } from "../utils/math";
+// import { RotationSmoother } from "../utils/math";
 import * as boneMap from "/public/avatars/AnimeGirlKawaii/AnimeGirlKawaii_BoneMap.json";
-import { calcArmsCustom } from "../utils/calcArms";
+import calculateArmAngles from "../utils/armAngles";
 
 interface AvatarRigProps {
     videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -20,7 +20,7 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
     const poseRest = useRef<Record<string, THREE.Quaternion>>({});
 
     // Smoothers
-    const headSmoother = useRef(new RotationSmoother(0.15));
+    // const headSmoother = useRef(new RotationSmoother(0.15));
 
     useEffect(() => {
         mediaPipeService.initialize();
@@ -44,7 +44,6 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
 
         frameRef.current++;
         const cycle = frameRef.current % 3;
-        // const cycle = 1;
 
         // =========================
         // FACE
@@ -81,8 +80,6 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
         // =========================
         if (cycle === 1) {
             const poseResult = mediaPipeService.trackPose(video);
-            poseResult.worldLandmarks[0][13].z = 2;
-            poseResult.landmarks[0][13].z = 2;
 
             if (!poseResult?.worldLandmarks?.length) return;
 
@@ -116,36 +113,25 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
                 boneNode.quaternion.slerp(finalQ, 0.3);
             }
 
-            // const arms = calcArmsCustom(poseResult.worldLandmarks[0]);
+            const armRotations = calculateArmAngles(poseResult.worldLandmarks[0]);
+            for (const bone in armRotations) {
+                const boneNode = nodes[boneMap.Pose[bone]];
+                // const restQ = poseRest.current[bone];
+                if (!boneNode) continue;
 
-            // LEFT ARM
-            // nodes[boneMap.Pose["LeftUpperArm"]].quaternion.setFromEuler(
-            //     new THREE.Euler(
-            //         arms.Left.shoulder.x,
-            //         arms.Left.shoulder.y,
-            //         0,
-            //         "XYZ"
-            //     )
-            // );
+                const r = armRotations[bone];
 
-            // nodes[boneMap.Pose["LeftLowerArm"]].quaternion.setFromEuler(
-            //     new THREE.Euler(arms.Left.elbow.x, 0, 0, "XYZ")
-            // );
+                const euler = new THREE.Euler(
+                    THREE.MathUtils.degToRad(r.x),
+                    THREE.MathUtils.degToRad(r.y),
+                    THREE.MathUtils.degToRad(r.z),
+                    "XYZ"
+                );
 
-            // // RIGHT ARM
-            // nodes[boneMap.Pose["RightUpperArm"]].quaternion.setFromEuler(
-            //     new THREE.Euler(
-            //         arms.Right.shoulder.x,
-            //         arms.Right.shoulder.y,
-            //         0,
-            //         "XYZ"
-            //     )
-            // );
+                const finalQ = new THREE.Quaternion().setFromEuler(euler);
 
-            // nodes[boneMap.Pose["RightLowerArm"]].quaternion.setFromEuler(
-            //     new THREE.Euler(arms.Right.elbow.x, 0, 0, "XYZ")
-            // );
-
+                boneNode.quaternion.slerp(finalQ, 0.3);
+            }
         }
 
         // =========================
@@ -181,7 +167,7 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
                     );
 
                     const q = new THREE.Quaternion().setFromEuler(euler);
-                    handBone.quaternion.slerp(q, 0.5);
+                    handBone.quaternion.slerp(q, 0.2);
                 }
             }
         }
