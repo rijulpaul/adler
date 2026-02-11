@@ -43,7 +43,7 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
         if (!isReady || !video) return;
 
         frameRef.current++;
-        const cycle = frameRef.current % 3;
+        const cycle = frameRef.current % 2;
 
         // =========================
         // FACE
@@ -64,7 +64,7 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
 
             const r = faceRig.head.degrees;
             const euler = new THREE.Euler(
-                -THREE.MathUtils.degToRad(r.x),
+                -THREE.MathUtils.degToRad(r.x + 10),
                 -THREE.MathUtils.degToRad(r.y),
                 THREE.MathUtils.degToRad(r.z),
                 "XYZ"
@@ -161,8 +161,8 @@ export function useAvatarRig({ videoRef, nodes, isReady }: AvatarRigProps) {
 
                     const euler = new THREE.Euler(
                         isRight ? -r.z : r.z,
-                        r.x,
-                        -r.y,
+                        r.y,
+                        -r.x,
                         "XYZ"
                     );
 

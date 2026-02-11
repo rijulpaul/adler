@@ -214,23 +214,23 @@ function calculateArmAngles(landmarks) {
     return {
         LeftUpperArm: {
             x: 345 - leftUpperArmAbsolute.x,
-            y: leftUpperArmAbsolute.y - 105,
-            z: leftUpperArmAbsolute.z
+            y: leftUpperArmAbsolute.y - 130,
+            z: leftUpperArmAbsolute.z + 15
         },
         LeftLowerArm: {
             x: leftForearmLocal.z,
-            y: -leftForearmLocal.x, // roll
-            z: leftForearmLocal.y + 15
+            y: -leftForearmLocal.x + 10, // roll
+            z: leftForearmLocal.y * 1.5 - 30
         },
         RightUpperArm: {
             x: 345 - rightUpperArmAbsolute.x,
-            y: rightUpperArmAbsolute.y + 105,
-            z: rightUpperArmAbsolute.z
+            y: rightUpperArmAbsolute.y + 130,
+            z: rightUpperArmAbsolute.z - 15
         },
         RightLowerArm: {
             x: rightForearmLocal.z,
-            y: rightForearmLocal.x,
-            z: rightForearmLocal.y - 15
+            y: rightForearmLocal.x + 10,
+            z: rightForearmLocal.y * 1.45
         }
     };
 }
